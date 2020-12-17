@@ -4,6 +4,13 @@ public class AdminSession {
 	private long id;
 	private long IdAdministrator;
 	private boolean IsConnected;
+	
+public AdminSession(long id, long idAdministrator, boolean isConnected) {
+		super();
+		this.id = id;
+		IdAdministrator = idAdministrator;
+		IsConnected = isConnected;
+	}
 
 	public long getId() {
 		return id;
@@ -16,6 +23,8 @@ public class AdminSession {
 	public long getIdAdministrator() {
 		return IdAdministrator;
 	}
+
+	
 
 	public void setIdAdministrator(long idAdministrator) {
 		IdAdministrator = idAdministrator;
