@@ -1,10 +1,13 @@
 package com.controller.YoucodeGotTalent;
 
+import java.awt.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import com.config.YoucodeGotTalent.Config;
 import com.models.YoucodeGotTalent.Participation;
 import com.models.YoucodeGotTalent.User;
@@ -19,8 +22,21 @@ public class AdminController {
 		
 	}
 	
+	public void display() throws SQLException {
+		
+		String query = "Select * from Admin";
+		Statement statement = config.connect().createStatement();
+		ResultSet resultSet = statement.executeQuery(query);
+		
+		while (resultSet.next()) {
+			
+			System.out.println(resultSet.getString("name"));
+			
+		}  
+		
+	}
 	
-	// verfify connection
+	
 	public Boolean verifyConnection() throws SQLException {
 		
 		
@@ -39,6 +55,7 @@ public class AdminController {
 	public  ArrayList<User> getAll() throws SQLException {
 		ArrayList<User> usersList = new ArrayList<>();
 		if(verifyConnection()==true) {
+			//System.out.println("it s connect");
 			
 			String sql = "SELECT * FROM users";
 			PreparedStatement stmt = config.connect().prepareStatement(sql);
@@ -57,7 +74,6 @@ public class AdminController {
 		return usersList;
 	}
 
-	// admin connection
 	public long adminConnection(String email, String password) {
 		long idFD=0;
 		try {
@@ -76,7 +92,7 @@ public class AdminController {
 					PreparedStatement stmt2 = config.connect().prepareStatement(sql);
 					stmt2.setLong(1,idFD);
 					stmt2.executeUpdate();
-					System.out.println("You are connected :)");
+					System.out.println("vous etez connectez :)");
 				}
 
 
@@ -105,6 +121,8 @@ public class AdminController {
 	public  ArrayList<Participation> getAllParticipation() throws SQLException {
 		ArrayList<Participation> participationList = new ArrayList<>();
 		if(verifyConnection()==true) {
+			//System.out.println("it s connect");
+			
 			String sql = "SELECT * FROM `participation`";
 			PreparedStatement stmt = config.connect().prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
@@ -149,7 +167,7 @@ public class AdminController {
 			String sql = "UPDATE admin_session SET is_connected = 0 WHERE id_admin = 15970010";
 			PreparedStatement stmt = config.connect().prepareStatement(sql);
 			stmt.executeUpdate();
-			System.out.println("You are Disconnected !");
+			System.out.println("déconnecté avec succès");
 			
 		}
 
