@@ -3,13 +3,11 @@ package com.controller.YoucodeGotTalent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
 import com.config.YoucodeGotTalent.Config;
 import com.methods.YoucodeGotTalent.Methods;
 import com.models.YoucodeGotTalent.User;
-import java.util.Random;
 
 public class UserController {
 	Config config;
@@ -17,20 +15,6 @@ public class UserController {
 	public UserController() throws SQLException {
 		
 		config= new Config("jdbc:mysql://localhost/youcodegt","root","");
-		
-	}
-	
-	public void display() throws SQLException {
-		
-		String query = "Select * from users";
-		Statement statement = config.connect().createStatement();
-		ResultSet resultSet = statement.executeQuery(query);
-		
-		while (resultSet.next()) {
-			
-			System.out.println(resultSet.getString("first_name"));
-			
-		}  
 		
 	}
 	// Add user
@@ -42,7 +26,6 @@ public class UserController {
 			Methods mt = new Methods();
 			stmt = config.connect().prepareStatement(sql);
 			Long id =mt.randomId();
-//			System.out.println(id);
 			stmt.setLong(1, id);
 			stmt.setString(2, first_name);
 			stmt.setString(3, last_name);
@@ -56,9 +39,9 @@ public class UserController {
 			stmt.setLong(1, id);
 			rs = stmt.executeQuery();
 			if(rs.next()) {
-			System.out.println("votre compte est bien enregistre votre information est :\nnom : "+rs.getString("first_name")+
-			"\nprenom : "+rs.getString("last_name")+"\nemail : "+rs.getString("email")+"\nphone : "+rs.getString("phone")+
-			 "\nId : "+rs.getLong("user_id")+" enregistre votre id pour participe");
+			System.out.println("your account is correctly registered your information is:\n Name : "+rs.getString("first_name")+
+			"\n lastname : "+rs.getString("last_name")+"\n Email : "+rs.getString("email")+"\n Phone : "+rs.getString("phone")+
+			 "\nId : "+rs.getLong("user_id")+" Note: register your id to participate");
 			}
 			
 		} catch (SQLException e) {
@@ -77,7 +60,7 @@ public class UserController {
 		PreparedStatement stmt;
 		ResultSet rs;
 		Scanner inp = new Scanner(System.in);
-		System.out.println("entre votre id : ");
+		System.out.println("Enter your id : ");
 		long id = inp.nextLong();
 		
 			String sql = "SELECT * FROM users WHERE user_id = ?";
@@ -86,23 +69,20 @@ public class UserController {
 			rs = stmt.executeQuery();
 			rs.next();
 			user = new User(id, rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("phone"));
+			inp.close();
 			return user;
 			}
 	
-	
-			
-			
 			
 			
 
 	// update user by id 
 	
 	public void updateUser() throws SQLException {
-		User user;
 		PreparedStatement stmt;
 		ResultSet rs;
 		Scanner inp = new Scanner(System.in);
-		System.out.println("entre votre id pour le mise a jour : ");
+		System.out.println("Enter your id for the update : ");
 		long id = inp.nextLong();
 		
 			String sql = "SELECT * FROM users WHERE user_id = ?";
@@ -110,19 +90,19 @@ public class UserController {
 			stmt.setLong(1, id);
 			rs = stmt.executeQuery();
 			rs.next();
-		System.out.println("bonjour : "+rs.getString("first_name")+
-			"\nvoici votre information \nprenom : "+rs.getString("last_name")+"\nemail : "+rs.getString("email")+"\nphone : "+rs.getString("phone")+
-			"\nsi vous avez un besoin de modifier votre information tapez 1 ");
+		System.out.println("hello : "+rs.getString("first_name")+
+			"\n here is your information \n Lastname : "+rs.getString("last_name")+"\n Email : "+rs.getString("email")+"\n Phone : "+rs.getString("phone")+
+			"\n if you need to change your information type 1");
 			int choix = inp.nextInt();
 					switch (choix) {
 					case 1:
-						System.out.println("first name");
+						System.out.println("Enter your firstname :");
 						String first_name = inp.next();
-						System.out.println("last name");
+						System.out.println(" Enter your lastname :");
 						String last_name = inp.next();
-						System.out.println("email");
+						System.out.println(" Enter your email :");
 						String email = inp.next();
-						System.out.println("phone");
+						System.out.println("Enter your phone :");
 						String phone = inp.next();
 						sql  = "UPDATE users SET first_name =?, last_name = ?,email = ?,phone = ? WHERE user_id = ?";
 						stmt=config.connect().prepareStatement(sql);
@@ -135,9 +115,9 @@ public class UserController {
 						break;
 
 					default:
-						System.out.println("error");
+						System.out.println("Error");
 						break;
-					}  
+					}  inp.close();
 				}
 	
 	}

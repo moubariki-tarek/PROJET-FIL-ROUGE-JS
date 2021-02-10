@@ -18,6 +18,11 @@ public class Admin extends User {
 		Password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "Admin [Password=" + Password + "]";
+	}
+
 
 
 }
