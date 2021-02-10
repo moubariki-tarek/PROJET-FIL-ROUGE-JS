@@ -58,8 +58,7 @@ public class User {
 	// Tostring 
 	@Override
 	public String toString() {
-		return "User [Id=" + Id + ", lastName=" + lastName + ", firstName=" + firstName + ", email=" + email
-				+ ", phone=" + phone + "]";
+		return "User [Id=" + Id + ", lastName=" + lastName + ", firstName=" + firstName + ", phone=" + phone + "]";
 	}
 	
 

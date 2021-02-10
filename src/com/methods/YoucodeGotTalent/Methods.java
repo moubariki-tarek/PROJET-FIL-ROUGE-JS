@@ -25,7 +25,7 @@ public class Methods {
 		Long id = Math.abs(r.nextLong());
 		return id;
 	}
-// send email
+
 	public void SendMail(String server,String port,String username,String password,String to,
 			String subject,String msg) throws AddressException, MessagingException {
 		Properties prop = new Properties();
@@ -60,13 +60,11 @@ public class Methods {
 	   boolean b = emailaddress.matches(email_regex);
 	   return b;
 	}*/
-	
-	
-	// validation methods
-	
-	public final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);		    
-	public final Pattern VALID_PHONE_NUMBER_REGEX = Pattern.compile("^\\d{10}$", Pattern.CASE_INSENSITIVE);
-		    
+	public final Pattern VALID_EMAIL_ADDRESS_REGEX = 
+		    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	public final Pattern VALID_PHONE_NUMBER_REGEX = 
+		    Pattern.compile("^\\d{10}$", Pattern.CASE_INSENSITIVE);
+
 	public boolean validateEmail(String emailStr) {
 		        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
 		        return matcher.find();
