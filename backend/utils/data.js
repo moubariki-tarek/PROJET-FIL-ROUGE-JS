@@ -1,0 +1,3 @@
+export const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWRjNmE4OTAxZmJjYjBhN2MyNjgyYzEiLCJpYXQiOjE3MDg5NDQxMzksImV4cCI6MTcxMTUzNjEzOX0.E8OcNfy98U4FDr8CKi17DFAFJQzXxRPkzL1jAY8LLN4'
+export const categoryId = '65dc710801fbcb0a7c2682f2'
+export const updatedCategoryName = 'tv'
