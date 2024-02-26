@@ -11,6 +11,7 @@ import {
   useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from "../../redux/api/orderApiSlice";
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
   const { id: orderId } = useParams();
@@ -26,6 +27,8 @@ const Order = () => {
   const [deliverOrder, { isLoading: loadingDeliver }] =
     useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -191,24 +194,11 @@ const Order = () => {
           <span>$ {order.totalPrice}</span>
         </div>
 
-        {!order.isPaid && (
-          <div>
-            {loadingPay && <Loader />}{" "}
-            {isPending ? (
-              <Loader />
-            ) : (
-              <div>
-                <div>
-                  <PayPalButtons
-                    createOrder={createOrder}
-                    onApprove={onApprove}
-                    onError={onError}
-                  ></PayPalButtons>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+        <button type="button" className="bg-blue-500 text-white w-full py-2" onClick={() => navigate("/")}>
+          <text>Back to home</text>
+        </button>
+
+        <div style={{ height: 20 }}></div>
 
         {loadingDeliver && <Loader />}
         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
