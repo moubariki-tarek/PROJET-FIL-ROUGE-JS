@@ -6,17 +6,17 @@ const createCategory = asyncHandler(async (req, res) => {
     const { name } = req.body;
 
     if (!name) {
-      return res.json({ error: "Name is required" });
+      return res.status(400).json({ error: "Name is required" });
     }
 
     const existingCategory = await Category.findOne({ name });
 
     if (existingCategory) {
-      return res.json({ error: "Already exists" });
+      return res.status(400).json({ error: "Already exists" });
     }
 
     const category = await new Category({ name }).save();
-    res.json(category);
+    res.status(200).json(category);
   } catch (error) {
     console.log(error);
     return res.status(400).json(error);
@@ -37,7 +37,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     category.name = name;
 
     const updatedCategory = await category.save();
-    res.json(updatedCategory);
+    res.status(200).json(updatedCategory);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

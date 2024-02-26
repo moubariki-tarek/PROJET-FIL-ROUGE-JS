@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 const AdminProductUpdate = () => {
   const params = useParams();
 
-  const { data: productData } = useGetProductByIdQuery(params._id);
+  const { data: productData, refetch } = useGetProductByIdQuery(params._id);
 
   console.log(productData);
 
@@ -26,8 +26,7 @@ const AdminProductUpdate = () => {
   const [category, setCategory] = useState(productData?.category || "");
   const [quantity, setQuantity] = useState(productData?.quantity || "");
   const [brand, setBrand] = useState(productData?.brand || "");
-  const [stock, setStock] = useState(productData?.countInStock);
-
+  const [stock, setStock] = useState(productData?.countInStock || "");
   // hook
   const navigate = useNavigate();
 
@@ -51,6 +50,7 @@ const AdminProductUpdate = () => {
       setQuantity(productData.quantity);
       setBrand(productData.brand);
       setImage(productData.image);
+      setStock(productData?.countInStock);
     }
   }, [productData]);
 
@@ -98,6 +98,7 @@ const AdminProductUpdate = () => {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000,
         });
+        refetch();
         navigate("/admin/allproductslist");
       }
     } catch (err) {

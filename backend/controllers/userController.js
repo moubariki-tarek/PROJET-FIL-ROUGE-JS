@@ -72,7 +72,7 @@ const logoutCurrentUser = asyncHandler(async (req, res) => {
 
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
-  res.json(users);
+  res.status(200).json(users);
 });
 
 const getCurrentUserProfile = asyncHandler(async (req, res) => {

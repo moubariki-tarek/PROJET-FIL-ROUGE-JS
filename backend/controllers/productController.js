@@ -4,7 +4,7 @@ import Product from "../models/productModel.js";
 const addProduct = asyncHandler(async (req, res) => {
   try {
     const { name, description, price, category, quantity, brand } = req.fields;
-
+    console.log('name');
     // Validation
     switch (true) {
       case !name:
@@ -23,7 +23,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
     const product = new Product({ ...req.fields });
     await product.save();
-    res.json(product);
+    res.status(200).json(product);
   } catch (error) {
     console.error(error);
     res.status(400).json(error.message);
@@ -81,11 +81,11 @@ const fetchProducts = asyncHandler(async (req, res) => {
 
     const keyword = req.query.keyword
       ? {
-          name: {
-            $regex: req.query.keyword,
-            $options: "i",
-          },
-        }
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
       : {};
 
     const count = await Product.countDocuments({ ...keyword });
