@@ -29,7 +29,7 @@ describe('User Routes', () => {
         it('loging', async () => {
             const userData = {
                 email: 'admin@gmail.com',
-                password: '123456'
+                password: 'azerty'
             };
 
             const response = await request(app)
