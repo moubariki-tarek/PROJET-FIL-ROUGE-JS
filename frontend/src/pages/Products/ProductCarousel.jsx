@@ -1,4 +1,6 @@
-import { useGetTopProductsQuery } from "../../redux/api/productApiSlice";
+import { useState, useEffect } from "react";
+// import { useGetTopProductsQuery } from "../../redux/api/productApiSlice";
+import { useGetTopProductsQuery } from "../../serverApi/productApi";
 import Message from "../../components/Message";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -13,7 +15,22 @@ import {
 } from "react-icons/fa";
 
 const ProductCarousel = () => {
-  const { data: products, isLoading, error } = useGetTopProductsQuery();
+  // const { data: products, isLoading, error } = useGetTopProductsQuery();
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const fetchTopProduct = () => {
+    setIsLoading(true);
+    useGetTopProductsQuery()
+      .then(({ data }) => setData(data))
+      .catch((err) => setError(err))
+      .finally(() => setIsLoading(false));
+  };
+  useEffect(() => {
+    fetchTopProduct();
+
+    return () => {};
+  }, []);
 
   const settings = {
     dots: false,
@@ -37,7 +54,7 @@ const ProductCarousel = () => {
           {...settings}
           className="xl:w-[50rem]  lg:w-[50rem] md:w-[56rem] sm:w-[40rem] sm:block"
         >
-          {products.map(
+          {data.map(
             ({
               image,
               _id,

@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
-  useFetchCategoriesQuery,
+  // useFetchCategoriesQuery,
 } from "../../redux/api/categoryApiSlice";
+import {
+  // useCreateCategoryMutation,
+  // useUpdateCategoryMutation,
+  // useDeleteCategoryMutation,
+  useFetchCategoriesQuery,
+} from "../../serverApi/categoryApi";
 
 import { toast } from "react-toastify";
 import CategoryForm from "../../components/CategoryForm";
@@ -12,7 +18,22 @@ import Modal from "../../components/Modal";
 import AdminMenu from "./AdminMenu";
 
 const CategoryList = () => {
-  let { data: categories, refetch } = useFetchCategoriesQuery();
+  // let { data: categories, refetch } = useFetchCategoriesQuery();
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(null);
+  const fetchCategories = () => {
+    setIsLoading(true);
+    useFetchCategoriesQuery()
+      .then(({ data }) => setCategories(data))
+      .catch((err) => setIsError(err))
+      .finally(() => setIsLoading(false));
+  };
+  useEffect(() => {
+    fetchCategories();
+
+    return () => {};
+  }, []);
   const [name, setName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [updatingName, setUpdatingName] = useState("");
@@ -37,7 +58,7 @@ const CategoryList = () => {
       } else {
         setName("");
         toast.success(`${result.name} is created.`);
-        refetch();
+        fetchCategories();
       }
     } catch (error) {
       console.error(error);
@@ -68,7 +89,7 @@ const CategoryList = () => {
         setSelectedCategory(null);
         setUpdatingName("");
         setModalVisible(false);
-        refetch();
+        fetchCategories();
       }
     } catch (error) {
       console.error(error);
@@ -85,7 +106,7 @@ const CategoryList = () => {
         toast.success(`${result.name} is deleted.`);
         setSelectedCategory(null);
         setModalVisible(false);
-        refetch();
+        fetchCategories();
       }
     } catch (error) {
       console.error(error);
