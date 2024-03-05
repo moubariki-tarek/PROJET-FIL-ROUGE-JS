@@ -6,7 +6,9 @@ import AdminMenu from "./AdminMenu";
 
 const OrderList = () => {
   const { data: orders, isLoading, error } = useGetOrdersQuery();
-
+  const deliveredOrder= async (orderId)=>{
+    //  updateOrder({orderId}).then(()=>refetch()).catch(err=>console.log(err))
+    }
   return (
     <>
       {isLoading ? (
@@ -26,7 +28,6 @@ const OrderList = () => {
               <th className="text-left pl-1">USER</th>
               <th className="text-left pl-1">DATA</th>
               <th className="text-left pl-1">TOTAL</th>
-              {/* <th className="text-left pl-1">PAID</th> */}
               <th className="text-left pl-1">DELIVERED</th>
               <th></th>
             </tr>
@@ -64,7 +65,7 @@ const OrderList = () => {
                   )}
                 </td> */}
 
-                <td className="px-2 py-2">
+                <td className="px-2 py-2" onClick={()=>deliveredOrder(order._id)}>
                   {order.isDelivered ? (
                     <p className="p-1 text-center bg-green-400 w-[6rem] rounded-full">
                       Completed

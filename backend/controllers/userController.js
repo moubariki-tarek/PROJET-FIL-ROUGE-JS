@@ -2,9 +2,10 @@ import User from "../models/userModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
-
+   // create user 
 const createUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
+  
 
   if (!username || !email || !password) {
     throw new Error("Please fill all the inputs.");
@@ -32,12 +33,13 @@ const createUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid user data");
   }
 });
-
+//**************************************************** */
+     // start login route
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email);
-  console.log(password);
+  // console.log(email);
+  // console.log(password);
 
   const existingUser = await User.findOne({ email });
 
@@ -61,6 +63,9 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+//*********************** */
+// start logout route
+
 const logoutCurrentUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httyOnly: true,
@@ -69,11 +74,13 @@ const logoutCurrentUser = asyncHandler(async (req, res) => {
 
   res.status(200).json({ message: "Logged out successfully" });
 });
+// get all users
 
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
   res.status(200).json(users);
 });
+//  start profil user
 
 const getCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -89,7 +96,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found.");
   }
 });
-
+// Update Current user
 const updateCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
@@ -116,7 +123,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
-
+// Delete user
 const deleteUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
@@ -144,7 +151,7 @@ const getUserById = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
-
+// update user to admin
 const updateUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 

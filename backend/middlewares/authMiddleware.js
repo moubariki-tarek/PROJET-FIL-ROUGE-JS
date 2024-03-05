@@ -9,9 +9,12 @@ const authenticate = asyncHandler(async (req, res, next) => {
   token = req.cookies.jwt;
 
   if (token) {
+    // console.log("token",token );
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // console.log("decoded",decoded );
       req.user = await User.findById(decoded.userId).select("-password");
+      // console.log("req.user",req.user );
       next();
     } catch (error) {
       res.status(401);
@@ -24,6 +27,7 @@ const authenticate = asyncHandler(async (req, res, next) => {
 });
 
 const authorizeAdmin = (req, res, next) => {
+  // console.log("authorizeAdmin",req.user );
   if (req.user && req.user.isAdmin) {
     next();
   } else {
