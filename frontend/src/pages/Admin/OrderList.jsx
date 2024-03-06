@@ -2,13 +2,16 @@ import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
 import { useGetOrdersQuery } from "../../redux/api/orderApiSlice";
+import { updateOrder } from "../../serverApi/orderApi";
 import AdminMenu from "./AdminMenu";
 
 const OrderList = () => {
-  const { data: orders, isLoading, error } = useGetOrdersQuery();
-  const deliveredOrder= async (orderId)=>{
-    //  updateOrder({orderId}).then(()=>refetch()).catch(err=>console.log(err))
-    }
+  const { data: orders, isLoading, error, refetch } = useGetOrdersQuery();
+  const deliveredOrder = async (orderId) => {
+    updateOrder({ orderId })
+      .then(() => refetch())
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       {isLoading ? (
@@ -65,7 +68,11 @@ const OrderList = () => {
                   )}
                 </td> */}
 
-                <td className="px-2 py-2" onClick={()=>deliveredOrder(order._id)}>
+                <td
+                  className="px-2 py-2"
+                  onClick={() => deliveredOrder(order._id)}
+                  style={{ cursor: "pointer" }}
+                >
                   {order.isDelivered ? (
                     <p className="p-1 text-center bg-green-400 w-[6rem] rounded-full">
                       Completed

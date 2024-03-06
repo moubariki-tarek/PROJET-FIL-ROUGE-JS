@@ -11,3 +11,6 @@ import {
 export const useGetOrdersQuery = async () => {
     return await axios.get(`${BASE_URL}${ORDERS_URL}`)
 }
+export const updateOrder = async (payload) => {
+    return await axios.put(`${BASE_URL}${ORDERS_URL}/updateorder`, payload)
+}
