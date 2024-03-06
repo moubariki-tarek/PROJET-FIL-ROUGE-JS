@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useGetTopProductsQuery } from "../../serverApi/productApi";
 import { Link } from "react-router-dom";
 import Ratings from "./Ratings";
-import { useGetTopProductsQuery } from "../../redux/api/productApiSlice";
+// import { useGetTopProductsQuery } from "../../redux/api/productApiSlice";
 import SmallProduct from "./SmallProduct";
 import Loader from "../../components/Loader";
 
@@ -15,7 +16,22 @@ const ProductTabs = ({
   setComment,
   product,
 }) => {
-  const { data, isLoading } = useGetTopProductsQuery();
+  // const { data, isLoading } = useGetTopProductsQuery();
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const fetchTopProduct = () => {
+    setIsLoading(true);
+    useGetTopProductsQuery()
+      .then(({ data }) => setData(data))
+      .catch((err) => setError(err))
+      .finally(() => setIsLoading(false));
+  };
+  useEffect(() => {
+    fetchTopProduct();
+
+    return () => {};
+  }, []);
 
   const [activeTab, setActiveTab] = useState(1);
 
