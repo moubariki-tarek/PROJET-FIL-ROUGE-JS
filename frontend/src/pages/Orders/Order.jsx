@@ -8,7 +8,7 @@ import Loader from "../../components/Loader";
 import {
   useDeliverOrderMutation,
   useGetOrderDetailsQuery,
-  useGetPaypalClientIdQuery,
+
   usePayOrderMutation,
 } from "../../redux/api/orderApiSlice";
 import { useNavigate } from "react-router-dom";
@@ -30,34 +30,13 @@ const Order = () => {
 
   const navigate = useNavigate();
 
-  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+  
 
-  const {
-    data: paypal,
-    isLoading: loadingPaPal,
-    error: errorPayPal,
-  } = useGetPaypalClientIdQuery();
+  
 
-  useEffect(() => {
-    if (!errorPayPal && !loadingPaPal && paypal.clientId) {
-      const loadingPaPalScript = async () => {
-        paypalDispatch({
-          type: "resetOptions",
-          value: {
-            "client-id": paypal.clientId,
-            currency: "USD",
-          },
-        });
-        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
-      };
+  
 
-      if (order && !order.isPaid) {
-        if (!window.paypal) {
-          loadingPaPalScript();
-        }
-      }
-    }
-  }, [errorPayPal, loadingPaPal, order, paypal, paypalDispatch]);
+     
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {

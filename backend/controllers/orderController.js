@@ -1,3 +1,5 @@
+import { response } from "express";
+import asyncHandler from "../middlewares/asyncHandler.js";
 import Order from "../models/orderModel.js";
 import Product from "../models/productModel.js";
 
@@ -200,7 +202,21 @@ const markOrderAsDelivered = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
+const updateOrder = async(req,res)=> {
+  const {orderId}=req.body
+  const findOrder=await Order.findById(orderId)
+  if(!findOrder){
+    return res.status(404).json({message: "order not found"})
+  }
+  findOrder.isDelivered = true
+  try {
+    const updatedOrder = await findOrder.save();
+      res.json(updatedOrder);
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 export {
   createOrder,
   getAllOrders,
@@ -211,4 +227,5 @@ export {
   findOrderById,
   markOrderAsPaid,
   markOrderAsDelivered,
+  updateOrder,
 };
