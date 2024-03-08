@@ -11,19 +11,15 @@ function calcPrices(orderItems) {
   );
 
   const shippingPrice = itemsPrice > 100 ? 0 : 10;
-  const taxRate = 0.15;
-  const taxPrice = (itemsPrice * taxRate).toFixed(2);
 
   const totalPrice = (
     itemsPrice +
-    shippingPrice +
-    parseFloat(taxPrice)
+    shippingPrice
   ).toFixed(2);
 
   return {
     itemsPrice: itemsPrice.toFixed(2),
     shippingPrice: shippingPrice.toFixed(2),
-    taxPrice,
     totalPrice,
   };
 }
@@ -36,39 +32,15 @@ const createOrder = async (req, res) => {
       res.status(400);
       throw new Error("No order items");
     }
-
-    const itemsFromDB = await Product.find({
-      _id: { $in: orderItems.map((x) => x._id) },
-    });
-
-    const dbOrderItems = orderItems.map((itemFromClient) => {
-      const matchingItemFromDB = itemsFromDB.find(
-        (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
-      );
-
-      if (!matchingItemFromDB) {
-        res.status(404);
-        throw new Error(`Product not found: ${itemFromClient._id}`);
-      }
-
-      return {
-        ...itemFromClient,
-        product: itemFromClient._id,
-        price: matchingItemFromDB.price,
-        _id: undefined,
-      };
-    });
-
-    const { itemsPrice, taxPrice, shippingPrice, totalPrice } =
-      calcPrices(dbOrderItems);
-
+    orderItems.map(item => item.product = item._id)
+    const { itemsPrice, shippingPrice, totalPrice } =
+      calcPrices(orderItems);
     const order = new Order({
-      orderItems: dbOrderItems,
+      orderItems: orderItems,
       user: req.user._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
-      taxPrice,
       shippingPrice,
       totalPrice,
     });
@@ -202,17 +174,17 @@ const markOrderAsDelivered = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-const updateOrder = async(req,res)=> {
-  const {orderId}=req.body
-  const findOrder=await Order.findById(orderId)
-  if(!findOrder){
-    return res.status(404).json({message: "order not found"})
+const updateOrder = async (req, res) => {
+  const { orderId } = req.body
+  const findOrder = await Order.findById(orderId)
+  if (!findOrder) {
+    return res.status(404).json({ message: "order not found" })
   }
   findOrder.isDelivered = true
   try {
     const updatedOrder = await findOrder.save();
-      res.json(updatedOrder);
-    
+    res.json(updatedOrder);
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
