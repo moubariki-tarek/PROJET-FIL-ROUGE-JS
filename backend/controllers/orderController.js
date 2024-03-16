@@ -78,7 +78,7 @@ const countTotalOrders = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
+// check if removed from front 
 const calculateTotalSales = async (req, res) => {
   try {
     const orders = await Order.find();
@@ -88,7 +88,7 @@ const calculateTotalSales = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
+// check if removed from front 
 const calcualteTotalSalesByDate = async (req, res) => {
   try {
     const salesByDate = await Order.aggregate([

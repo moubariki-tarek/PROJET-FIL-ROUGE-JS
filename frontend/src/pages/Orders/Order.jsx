@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 import Messsage from "../../components/Message";
 import Loader from "../../components/Loader";
 import {
-  useDeliverOrderMutation,
+  // useDeliverOrderMutation,
   useGetOrderDetailsQuery,
 
-  usePayOrderMutation,
+  // usePayOrderMutation,
 } from "../../redux/api/orderApiSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -23,51 +23,43 @@ const Order = () => {
     error,
   } = useGetOrderDetailsQuery(orderId);
 
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
-  const [deliverOrder, { isLoading: loadingDeliver }] =
-    useDeliverOrderMutation();
+  // const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  // const [deliverOrder, { isLoading: loadingDeliver }] =
+  //   useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
-  
+  // function onApprove(data, actions) {
+  //   return actions.order.capture().then(async function (details) {
+  //     try {
+  //       await payOrder({ orderId, details });
+  //       refetch();
+  //       toast.success("Order is paid");
+  //     } catch (error) {
+  //       toast.error(error?.data?.message || error.message);
+  //     }
+  //   });
+  // }
 
-  
+  // function createOrder(data, actions) {
+  //   return actions.order
+  //     .create({
+  //       purchase_units: [{ amount: { value: order.totalPrice } }],
+  //     })
+  //     .then((orderID) => {
+  //       return orderID;
+  //     });
+  // }
 
-  
+  // function onError(err) {
+  //   toast.error(err.message);
+  // }
 
-     
-
-  function onApprove(data, actions) {
-    return actions.order.capture().then(async function (details) {
-      try {
-        await payOrder({ orderId, details });
-        refetch();
-        toast.success("Order is paid");
-      } catch (error) {
-        toast.error(error?.data?.message || error.message);
-      }
-    });
-  }
-
-  function createOrder(data, actions) {
-    return actions.order
-      .create({
-        purchase_units: [{ amount: { value: order.totalPrice } }],
-      })
-      .then((orderID) => {
-        return orderID;
-      });
-  }
-
-  function onError(err) {
-    toast.error(err.message);
-  }
-
-  const deliverHandler = async () => {
-    await deliverOrder(orderId);
-    refetch();
-  };
+  // const deliverHandler = async () => {
+  //   await deliverOrder(orderId);
+  //   refetch();
+  // };
 
   return isLoading ? (
     <Loader />
@@ -173,14 +165,18 @@ const Order = () => {
           <span>$ {order.totalPrice}</span>
         </div>
 
-        <button type="button" className="bg-blue-500 text-white w-full py-2" onClick={() => navigate("/")}>
+        <button
+          type="button"
+          className="bg-blue-500 text-white w-full py-2"
+          onClick={() => navigate("/")}
+        >
           <text>Back to home</text>
         </button>
 
         <div style={{ height: 20 }}></div>
 
-        {loadingDeliver && <Loader />}
-        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+        {/* {loadingDeliver && <Loader />} */}
+        {/* {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
           <div>
             <button
               type="button"
@@ -190,7 +186,7 @@ const Order = () => {
               Mark As Delivered
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

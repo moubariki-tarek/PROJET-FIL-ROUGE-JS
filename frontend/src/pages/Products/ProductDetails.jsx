@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import {
-  useGetProductDetailsQuery,
-  useCreateReviewMutation,
-} from "../../redux/api/productApiSlice";
+  useDispatch,
+  // , useSelector
+} from "react-redux";
+// import { toast } from "react-toastify";
+// import {
+//   useGetProductDetailsQuery,
+//   useCreateReviewMutation,
+// } from "../../redux/api/productApiSlice";
+import { useGetProductDetailsQuery } from "../../serverApi/productApi";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import {
@@ -17,8 +21,8 @@ import {
 } from "react-icons/fa";
 import moment from "moment";
 import HeartIcon from "./HeartIcon";
-import Ratings from "./Ratings";
-import ProductTabs from "./ProductTabs";
+// import Ratings from "./Ratings";
+// import ProductTabs from "./ProductTabs";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 
 const ProductDetails = () => {
@@ -26,43 +30,58 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [product, setProduct] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [qty, setQty] = useState(1);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+  // const [rating, setRating] = useState(0);
+  // const [comment, setComment] = useState("");
 
-  const {
-    data: product,
-    isLoading,
-    refetch,
-    error,
-  } = useGetProductDetailsQuery(productId);
+  // const {
+  //   data: product,
+  //   isLoading,
+  //   refetch,
+  //   error,
+  // } = useGetProductDetailsQuery(productId);
 
-  const { userInfo } = useSelector((state) => state.auth);
+  // const { userInfo } = useSelector((state) => state.auth);
 
-  const [createReview, { isLoading: loadingProductReview }] =
-    useCreateReviewMutation();
+  // const [createReview, { isLoading: loadingProductReview }] =
+  //   useCreateReviewMutation();
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      await createReview({
-        productId,
-        rating,
-        comment,
-      }).unwrap();
-      refetch();
-      toast.success("Review created successfully");
-    } catch (error) {
-      toast.error(error?.data || error.message);
-    }
-  };
+  //   try {
+  //     await createReview({
+  //       productId,
+  //       rating,
+  //       comment,
+  //     }).unwrap();
+  //     refetch();
+  //     toast.success("Review created successfully");
+  //   } catch (error) {
+  //     toast.error(error?.data || error.message);
+  //   }
+  // };
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
     navigate("/cart");
   };
 
+  const fetchProduct = () => {
+    setIsLoading(true);
+    useGetProductDetailsQuery(productId)
+      .then(({ data }) => setProduct(data))
+      .catch((err) => setError(err))
+      .finally(() => setIsLoading(false));
+  };
+  useEffect(() => {
+    fetchProduct();
+
+    return () => {};
+  }, []);
   return (
     <>
       <div>
@@ -118,9 +137,9 @@ const ProductDetails = () => {
                 </div>
 
                 <div className="two">
-                  <h1 className="flex items-center mb-6">
+                  {/* <h1 className="flex items-center mb-6">
                     <FaStar className="mr-2 text-white" /> Ratings: {rating}
-                  </h1>
+                  </h1> */}
                   <h1 className="flex items-center mb-6">
                     <FaShoppingCart className="mr-2 text-white" /> Quantity:{" "}
                     {product.quantity}
@@ -133,10 +152,10 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex justify-between flex-wrap">
-                <Ratings
+                {/* <Ratings
                   value={product.rating}
                   text={`${product.numReviews} reviews`}
-                />
+                /> */}
 
                 {product.countInStock > 0 && (
                   <div>
