@@ -13,4 +13,7 @@ export const useGetProductsQuery = async () => {
 }
 export const useGetTopProductsQuery = async () => {
     return await axios.get(`${BASE_URL}${PRODUCT_URL}/top`)
+}
+export const useGetProductDetailsQuery = async (productId) => {
+    return await axios.get(`${BASE_URL}${PRODUCT_URL}/${productId}`)
 } 

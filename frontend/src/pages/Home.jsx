@@ -14,7 +14,6 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
-  console.log("data", data);
   const fetchProduct = () => {
     useGetProductsQuery()
       .then(({ data }) => setData(data))

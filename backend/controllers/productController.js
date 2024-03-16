@@ -6,21 +6,23 @@ const addProduct = asyncHandler(async (req, res) => {
     const { name, description, price, category, quantity, brand } = req.fields;
     console.log('name', req.fields);
     // Validation
-    switch (true) {
-      case !name:
-        return res.json({ error: "Name is required" });
-      case !brand:
-        return res.json({ error: "Brand is required" });
-      case !description:
-        return res.json({ error: "Description is required" });
-      case !price:
-        return res.json({ error: "Price is required" });
-      case !category:
-        return res.json({ error: "Category is required" });
-      case !quantity:
-        return res.json({ error: "Quantity is required" });
+    // switch (true) {
+    //   case !name:
+    //     return res.json({ error: "Name is required" });
+    //   case !brand:
+    //     return res.json({ error: "Brand is required" });
+    //   case !description:
+    //     return res.json({ error: "Description is required" });
+    //   case !price:
+    //     return res.json({ error: "Price is required" });
+    //   case !category:
+    //     return res.json({ error: "Category is required" });
+    //   case !quantity:
+    //     return res.json({ error: "Quantity is required" });
+    // }
+    if (!name || !brand || !description || !price || !category || !quantity) {
+      return res.json({ error: "field is required" });
     }
-
     const product = new Product({ ...req.fields });
     await product.save();
     res.status(200).json(product);
@@ -35,21 +37,23 @@ const updateProductDetails = asyncHandler(async (req, res) => {
     const { name, description, price, category, quantity, brand } = req.fields;
 
     // Validation
-    switch (true) {
-      case !name:
-        return res.json({ error: "Name is required" });
-      case !brand:
-        return res.json({ error: "Brand is required" });
-      case !description:
-        return res.json({ error: "Description is required" });
-      case !price:
-        return res.json({ error: "Price is required" });
-      case !category:
-        return res.json({ error: "Category is required" });
-      case !quantity:
-        return res.json({ error: "Quantity is required" });
+    // switch (true) {
+    //   case !name:
+    //     return res.json({ error: "Name is required" });
+    //   case !brand:
+    //     return res.json({ error: "Brand is required" });
+    //   case !description:
+    //     return res.json({ error: "Description is required" });
+    //   case !price:
+    //     return res.json({ error: "Price is required" });
+    //   case !category:
+    //     return res.json({ error: "Category is required" });
+    //   case !quantity:
+    //     return res.json({ error: "Quantity is required" });
+    // }
+    if (!name || !brand || !description || !price || !category || !quantity) {
+      return res.json({ error: "field is required" });
     }
-
     const product = await Product.findByIdAndUpdate(
       req.params.id,
       { ...req.fields },
@@ -153,7 +157,7 @@ const fetchNewProducts = asyncHandler(async (req, res) => {
 
 const filterProducts = asyncHandler(async (req, res) => {
   try {
-    const { checked} = req.body;
+    const { checked } = req.body;
 
     let args = {};
     if (checked.length > 0) args.category = checked;
